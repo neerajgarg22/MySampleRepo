@@ -1,0 +1,33 @@
+version: '3.1'
+
+# services:
+#   productservice.api:
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Development
+#       - ASPNETCORE_HTTP_PORTS=5000
+#       - ASPNETCORE_HTTPS_PORTS=5001
+#     container_name: productservice.api
+#     ports:
+#       - "5000:5000"
+#       - "5001:5001"
+#   mssql:
+#     image: mcr.microsoft.com/mssql/server:2022-latest
+#     container_name: mssql-server
+#     ports:
+#       - "1433:1433"
+#     environment:
+#       ACCEPT_EULA: "Y"
+#       SA_PASSWORD: "MySQLPassword!"       # Strong SA password
+#       MSSQL_PID: "Express"                # Use the Express edition
+#     volumes:
+#       - mssql_data:/var/opt/mssql         # Persistent database storag
+#   redis:
+#     image: redis:7.0-alpine
+#     container_name: redis-cache
+#     ports:
+#       - "6379:6379"                       # Expose Redis on default port
+#     volumes:
+#       - redis_data:/var/opt/redis                  # Persistent Redis storage
+# volumes:
+#   mssql_data:
+#   redis_data:

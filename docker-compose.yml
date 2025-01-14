@@ -1,0 +1,50 @@
+version: '3.1'
+networks:
+  productServiceNetwork:
+
+services:
+   myrediscache:
+    image: redis:7.0-alpine
+    container_name: myrediscache
+    ports:
+      - "6379:6379"                       #Expose Redis on default port
+    volumes:
+      - redis_data:/var/opt/redis          #        Persistent Redis storage
+    networks:
+     - productServiceNetwork
+   mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql-server
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "MySQLPassword!"       # Strong SA password
+    volumes:
+      - mssql_data:/var/lib/mssql         # Persistent database storag
+    networks:
+     - productServiceNetwork
+   ProductService:
+    image: neerajg2210/productservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+      - DB_HOST=mssql-server
+      - DB_NAME=ProductDB
+      - DB_SA_PASSWORD=MySQLPassword!
+    container_name: productservice.api
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    # build:
+    #   context: ProductService
+    #   dockerfile: Dockerfile
+    depends_on:
+      - myrediscache
+      - mssql
+    networks:
+     - productServiceNetwork
+volumes:
+ mssql_data:
+ redis_data:
+
